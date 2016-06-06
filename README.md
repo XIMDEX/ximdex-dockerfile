@@ -2,24 +2,16 @@
 
 Commands to try it
 
-1)  Clone this repo
-
-2)  Build the image locally (inside root folder)
+1)  Launch a mysql container with docker
 
 ```sh
-$ docker build -t myximimage . 
+$ docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:5.6
 ```
 
-3)  Launch a mysql container with docker
+2)  Launch a ximdex container (linking it with the mysql container)
 
 ```sh
-$ docker run --name some-mysql -d mysql:5.5
+$ docker run --name myximdex -p 80:80 --link some-mysql:mysql docker pull ximdex/ximdex
 ```
 
-4)  Launch a myximimage container (linking it with the mysql container)
-
-```sh
-$ docker run --name myximdex -p 9000:80 --link some-mysql:mysql myximimage
-```
-
-5)  Visit http://localhost:9000/setup/index.php
+3)  Visit http://localhost/setup/index.php
