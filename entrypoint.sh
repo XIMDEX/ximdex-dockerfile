@@ -33,7 +33,7 @@ set -e
                 echo >&2 "  (Also of interest might be XIMDEX_DB_USER and XIMDEX_DB_NAME.)"
                 exit 1
         fi
-        if ! [ -e index.php -a -e setup/index.php ]; then
+        if ! [ -e index.php -a -e conf/install-params.conf.php ]; then
                 echo >&2 "Ximdex not found in $(pwd) - copying now..."
 
                 if [ "$(ls -A)" ]; then

@@ -1,5 +1,5 @@
 # Set the base image to use to Ubuntu
-FROM php:7.0-apache
+FROM php:5.6-apache
 
 # Set the file maintainer
 MAINTAINER Ximdex ximdex
@@ -10,7 +10,7 @@ RUN a2enmod rewrite
 # Updating the repository list
 RUN apt-get update && apt-get install -y unzip cron libicu-dev libcurl4-gnutls-dev pwgen python-setuptools gettext libpng12-dev libmcrypt-dev libjpeg-dev libxml2-dev libxslt-dev \
 	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
-	&& docker-php-ext-install gettext pdo pdo_mysql curl xmlrpc gd intl xsl mcrypt mysqli opcache
+	&& docker-php-ext-install gettext pdo pdo_mysql curl xmlrpc gd intl xsl mcrypt opcache
 
 # set recommended PHP.ini settings
 # see https://secure.php.net/manual/en/opcache.installation.php
@@ -25,6 +25,10 @@ RUN { \
 
 VOLUME /var/www/html
 
+COPY entrypoint.sh /entrypoint.sh
+COPY makedb.php /makedb.php
+ADD supervisord.conf /etc/supervisord.conf
+
 # Cloning Ximdex CMS from GitHub in /var/www/html
 RUN curl -o ximdex.zip -SL https://github.com/XIMDEX/ximdex/archive/develop.zip && \
 		unzip ximdex.zip -d /usr/src/ && \
@@ -36,17 +40,12 @@ RUN curl -o ximdex.zip -SL https://github.com/XIMDEX/ximdex/archive/develop.zip 
 		chmod -R 2770 /usr/src/ximdex/conf && \
 		chmod -R 2770 /usr/src/ximdex/logs && \
 		line="* * * * * (php /var/www/html/modules/ximSYNC/scripts/scheduler/scheduler.php) >>  /var/www/html/logs/scheduler.log 2>&1" && \
-		(crontab -u root -l; echo "$line" ) | crontab -u root -
-		
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod 755 /entrypoint.sh
-COPY makedb.php /makedb.php
+		(crontab -u root -l; echo "$line" ) | crontab -u root - && \
+		chmod 755 /entrypoint.sh && \
+		touch /usr/local/etc/php/conf.d/docker-php-ext-prod.ini && \
+		echo 'display_errors=0' > /usr/local/etc/php/conf.d/docker-php-ext-prod.ini && \
+		easy_install supervisor
 
-RUN touch /usr/local/etc/php/conf.d/docker-php-ext-prod.ini && echo 'display_errors=0' > /usr/local/etc/php/conf.d/docker-php-ext-prod.ini
-
-# Installing supervisor
-RUN easy_install supervisor
-ADD supervisord.conf /etc/supervisord.conf
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["supervisord", "-n"]
