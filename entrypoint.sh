@@ -49,6 +49,17 @@ set -e
                         chown www-data:www-data .htaccess
                 fi
 
+                array=("${XIMDEX_DB_HOST//:/ }")
+                HOST="${array[0]}"
+                PORT="3306"
+                
+                if [ -n "${array[1]}" ]; then
+                       PORT="${array[1]}" 
+                fi
+
+                # Setting dbconfig
+                echo "{\"dbname\": \"$XIMDEX_DB_NAME\",\"dbhost\": \"$HOST\",\"dbport\": \"$PORT\",\"dbuser\": \"$XIMDEX_DB_USER\",\"dbpass\": \"$XIMDEX_DB_PASSWORD\"}" > /var/www/html/setup/data/config.json
+
                 echo >&2 "Complete! Ximdex has been successfully copied to $(pwd)"
         fi
 
