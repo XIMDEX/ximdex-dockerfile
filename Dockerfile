@@ -8,7 +8,7 @@ MAINTAINER Ximdex ximdex
 RUN a2enmod rewrite
 
 # Updating the repository list
-RUN apt-get update && apt-get install -y unzip cron libicu-dev libcurl4-gnutls-dev pwgen python-setuptools gettext libpng12-dev libmcrypt-dev libjpeg-dev libxml2-dev libxslt-dev \
+RUN apt-get update && apt-get install -y unzip libicu-dev libcurl4-gnutls-dev pwgen python-setuptools gettext libpng12-dev libmcrypt-dev libjpeg-dev libxml2-dev libxslt-dev \
 	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
 	&& docker-php-ext-configure sysvmsg \
 	&& docker-php-ext-configure sysvsem \
@@ -41,9 +41,6 @@ RUN curl -o ximdex.zip -SL https://github.com/XIMDEX/ximdex/archive/develop.zip 
 		chmod -R 2770 /usr/src/ximdex/data && \
 		chmod -R 2770 /usr/src/ximdex/conf && \
 		chmod -R 2770 /usr/src/ximdex/logs && \
-		pathline="PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin" && \
-		line="* * * * * /var/www/html/modules/ximSYNC/scripts/scheduler/scheduler.php >>  /var/www/html/logs/scheduler.log 2>&1" && \
-		(crontab -l; echo "$pathline"; echo "$line" ) | crontab - && \
 		chmod 755 /entrypoint.sh && \
 		touch /usr/local/etc/php/conf.d/docker-php-ext-prod.ini && \
 		echo 'display_errors=0' > /usr/local/etc/php/conf.d/docker-php-ext-prod.ini

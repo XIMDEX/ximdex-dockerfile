@@ -77,6 +77,4 @@ set -e
         echo >&2
         echo >&2 "========================================================================"
 
-service cron start
-
-exec "$@"
+tasks/scheduler.sh & exec "$@"
