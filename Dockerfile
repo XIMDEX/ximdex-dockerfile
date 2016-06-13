@@ -32,9 +32,9 @@ COPY entrypoint.sh /entrypoint.sh
 COPY makedb.php /makedb.php
 
 # Cloning Ximdex CMS from GitHub in /var/www/html
-RUN curl -o ximdex.zip -SL https://github.com/XIMDEX/ximdex/archive/develop.zip && \
+RUN curl -o ximdex.zip -SL https://github.com/XIMDEX/ximdex/archive/3.8.5.zip && \
 		unzip ximdex.zip -d /usr/src/ && \
-		mv /usr/src/ximdex-develop /usr/src/ximdex && \
+		mv /usr/src/ximdex-3.8.5 /usr/src/ximdex && \
 		rm -f ximdex.zip && \
 		# Setting permissions
 		chown -R www-data:www-data /usr/src/ximdex && \
