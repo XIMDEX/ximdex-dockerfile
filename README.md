@@ -6,15 +6,22 @@ Commands to try it
 
 ```sh
 $ docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:5.6
+$ # If you already have a mysql container called some-mysql you can run it with docker start some-mysql
 ```
 
 2)  Launch a ximdex container (linking it with the mysql container)
 
 ```sh
 $ docker run --name myximdex -p 80:80 --link some-mysql:mysql ximdex/ximdex
+$ # If you already have a ximdex container called myximdex you can run it with docker start myximdex
 ```
 
-3)  Visit http://localhost/setup/index.php
+3)  Visit http://localhost/setup/index.php In Mac OS, you have to visit http://DOCKER_HOST/setup/index.php, you can check your DOCKER_HOST using:
+
+```sh
+# Only for Mac OS users
+env | grep DOCKER_HOST
+```
 
 The following environment variables are also honored for configuring your Ximdex instance:
 
