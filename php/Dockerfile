@@ -1,4 +1,4 @@
-FROM php:5.6-fpm-alpine
+FROM php:7-fpm-alpine
 # Install modules
 
 RUN apk add --no-cache unzip icu-dev pwgen gettext gettext-dev libcurl  libmcrypt-dev libxml2-dev  libxslt-dev freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev curl-dev tzdata
