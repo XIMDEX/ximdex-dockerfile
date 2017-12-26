@@ -1,6 +1,6 @@
 FROM webdevops/php-nginx:alpine-php7
 
-ADD ../nginx.conf /etc/nginx/
+ADD ./nginx.conf /etc/nginx/
 
 RUN echo "Europe/Madrid" > /etc/timezone
 
