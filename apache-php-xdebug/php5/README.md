@@ -1,6 +1,7 @@
 # Ximdex Dockerfile for debugging in PHP 5
-Example:
+Example for docker-compose.yml file:
 ```
+version: "2"
 services:
   myximdex:
     image: ximdex/nginx-php:php5-xdebug
@@ -9,8 +10,7 @@ services:
     links:
       - db
     ports:
-      - 8080:80
+      - 8080:8080
     environment:
       WEB_DOCUMENT_ROOT: /var/www/html
-   	...
 ```
