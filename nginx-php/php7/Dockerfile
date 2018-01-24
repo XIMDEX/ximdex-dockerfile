@@ -1,4 +1,4 @@
-FROM webdevops/php-nginx:alpine-php7
+FROM webdevops/php-apache-dev:alpine-php7
 
 ADD ./nginx.conf /etc/nginx/
 
